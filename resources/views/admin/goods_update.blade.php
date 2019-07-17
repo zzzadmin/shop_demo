@@ -19,6 +19,7 @@
             <tr>
                 <td>商品图片:</td>
                 <td>
+                    <img src="{{$info->goods_pic}}" alt="" width="50">
                     <input type="file" name="goods_pic">
                 </td>
             </tr>

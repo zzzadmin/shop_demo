@@ -14,6 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+// 路由  get请求 
+// Route::get('路由名','class类')
 // 文件上传
 Route::get('/admin/add_goodsfile','admin\GoodsfileController@add_goodsfile');
 Route::post('/admin/do_add_goodsfile','admin\GoodsfileController@do_add_goodsfile');
@@ -35,19 +37,28 @@ Route::get('/admin/list','admin\GoodsController@goods_list');
 // 后台商品删除
 Route::get('/admin/delete','admin\GoodsController@goods_del');
 // 后台商品修改
-Route::get('/admin/update','admin\GoodsController@update');
+// Route::get('/admin/update','admin\GoodsController@update');
 Route::post('/admin/update_do','admin\GoodsController@update_do');
 
 
 // 前台hone
+
+// 前台首页
 Route::get('/home','home\IndexController@index');
-// 路由  get请求 
-// Route::get('路由名','class类')
+// 商品列表展示
+Route::get('/home/list','home\IndexController@list');
+// 商品详情
+Route::get('/home/details','home\IndexController@details');
+// 前台添加购物车
+Route::get('/home/buy','home\IndexController@cart_add');
+Route::get('/home/cart','home\IndexController@cart_add');
+Route::get('/home/cart_do','home\IndexController@cart_do');
+
 // 登录
 Route::get('/student/login','StudentController@login');
 // 测试
 Route::get('/student/demo','StudentController@demo');
-Route::post('/student/do_login','StudentController@do_login');
+Route::post('/student/login_do','StudentController@do_login');
 // 列表展示
 Route::get('/student/index','StudentController@index');
 // 添加学生信息
@@ -62,3 +73,14 @@ Route::group(['middleware' => ['login']], function () {
     // 添加学生信息
 	Route::get('/student/add','StudentController@add');
 });
+
+
+
+Route::group(['middleware' => ['Timeupdate']], function () {
+	Route::get('/admin/update','admin\GoodsController@update');
+	});
+
+// 支付宝
+Route::get('pay','PayController@do_pay');
+Route::get('return_url','PayController@return_url');//同步
+Route::post('notify_url','PayController@notify_url');//异步

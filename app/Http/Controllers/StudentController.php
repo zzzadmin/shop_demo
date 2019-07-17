@@ -18,12 +18,14 @@ class StudentController extends Controller
 	}
 	// 列表展示
     public function index(Request $request){
+        // 访问次数
     	$redis = new \redis();
 		$redis->connect('127.0.0.1','6379');
 		$redis->incr('num');
 		$num = $redis->get('num');
 		echo "访问次数".$num;
     	$req = $request->all();
+        
         // 搜索
     	$search = '';
     	if(!empty($req['search'])){

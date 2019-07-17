@@ -45,10 +45,14 @@ class IndexController extends Controller
 	// 登录执行
 	public function login_do(Request $request)
 	{
+		// 接收数据
 		$data = $request->all();
+		// 查询
+		$datas = Admin::where(['r_name'=>$data['r_name']])->first();
 		unset($data['_token']);
 		$data['pwd'] = md5($data['pwd']);
 		// 条件
+		// dd($data);
 		$where = [
 			'r_name'=>$data['r_name'],
 			'pwd'=>$data['pwd']
@@ -62,10 +66,11 @@ class IndexController extends Controller
 			echo ("<script>alert('用户名或密码输入错误');location='/admin/login'</script>");
 		}else{
 			session([
+				'id'=>$datas['id'],
 				'r_name'=>$data['r_name'],
 				'pwd'=>$data['pwd']
 			]);
-			echo ("<script>alert('登陆成功');location='/admin/add_goods'</script>");
+			echo ("<script>alert('登陆成功');location='/home'</script>");
 		}
 	}
     public function index()

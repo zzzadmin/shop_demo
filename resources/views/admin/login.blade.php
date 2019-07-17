@@ -33,7 +33,7 @@
 @section('script')
     <script>
     	$(function(){
-    		alert(111);
+    		// alert(111);
     	});
     </script>
 @endsection

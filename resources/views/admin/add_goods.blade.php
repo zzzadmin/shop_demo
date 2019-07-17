@@ -1,38 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-    </head>
-    <body>
-	<h1 align="center">商品添加</h1>
-    <form action="{{url('/admin/add_goods_do')}}" method="post" enctype="multipart/form-data">
-        <table border='1' align="center">
-            @csrf
-            <tr>
-                <td>商品名称:</td>
-                <td>
-                    <input type="text" name="goods_name">
-                </td>
-            </tr>
-            <tr>
-                <td>商品图片:</td>
-                <td>
-                    <input type="file" name="goods_pic">
-                </td>
-            </tr>
-            
-            <tr>
-                <td>商品价格:</td>
-                <td>
-                    <input type="text" name="goods_price">
-                </td>
-            </tr>
-            <tr>
-                <td colspan='2' >
-                    <button>添加</button>
-                </td>
-            </tr>
-        </table>
-    </form>
-</body>
-</html>
+@extends('layout.common')
+
+@section('title', '商品添加')
+@section('body')
+    <div class="pages section">
+    <div class="container">
+        <div class="pages-head">
+            <h3>商品添加</h3>
+        </div>
+        <div class="login">
+            <div class="row">
+                <form action="{{url('/admin/add_goods_do')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="input-field">
+                        商品名称:<input type="text" class="validate" width="60" name="goods_name" placeholder="商品名称" required>
+                    </div>
+                    <div class="input-field">
+                        商品图片:<input type="file" class="validate" name="goods_pic">
+                    </div>
+                    <div class="input-field">
+                        商品库存:<input type="text" class="validate" name="goods_number">
+                    </div>
+                    <div class="input-field">
+                        商品价格:<input type="text" name="goods_price" class="validate" placeholder="商品价格" required>
+                    </div>
+                    <button class="btn button-default">添加</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    
+@endsection
