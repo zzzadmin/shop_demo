@@ -83,7 +83,7 @@
 					</div>
 				</div>
 			</div>
-			<button class="btn button-default">Process to Checkout</button>
+			<a href="{{url('/home/order')}}" class="btn button-default">结算</a>
 		</div>
 	</div>
 	<!-- end cart -->

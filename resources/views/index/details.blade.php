@@ -12,7 +12,7 @@
         <h5>Fashion Men's</h5>
         <div class="price">${{$v->goods_price}} </div>
         
-        <button type="button" class="btn button-default">ADD TO CART</button>
+        <a class="btn button-default" href="/home/cart_do">添加购物车</a>
       </div>
       @endforeach
       <div class="review">

@@ -112,7 +112,7 @@
 						<div class="price">
 							 <span>{{$v->goods_price}}$</span>
 						</div>
-						<button class="btn button-default"><a href="{{url('/home/buy')}}?id={{$v->id}}">购买</a></button>
+						<a class="btn button-default" href="{{url('/home/buy')}}?id={{$v->id}}">购买</a>
 					</div>
 				</div>
 				<div class="col s6">
@@ -122,7 +122,7 @@
 						<div class="price">
 							$20 <span>$28</span>
 						</div>
-						<button class="btn button-default"><a href="{{url('/home/buy')}}?id={{$v->id}}">ADD TO CART</a></button>
+						<a class="btn button-default" href="{{url('/home/buy')}}?id={{$v->id}}">ADD TO CART</a>
 					</div>
 				</div>
 			</div>

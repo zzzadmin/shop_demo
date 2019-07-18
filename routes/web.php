@@ -50,10 +50,17 @@ Route::get('/home/list','home\IndexController@list');
 // 商品详情
 Route::get('/home/details','home\IndexController@details');
 // 前台添加购物车
-Route::get('/home/buy','home\IndexController@cart_add');
+Route::get('/home/buy','home\IndexController@cart_add');//购买
+//购物车视图
 Route::get('/home/cart','home\IndexController@cart_add');
+// 购物车执行
 Route::get('/home/cart_do','home\IndexController@cart_do');
+// 订单视图
+Route::get('/home/order_list','home\IndexController@order_list');
+// 添加订单
+Route::get('/home/order','home\IndexController@order');
 
+// 学生列表测试
 // 登录
 Route::get('/student/login','StudentController@login');
 // 测试
@@ -68,13 +75,14 @@ Route::get('/student/update','StudentController@update');
 Route::post('/student/do_update','StudentController@do_update');
 // 删除
 Route::get('/student/delete','StudentController@delete');
+
+
+
 // 调用中间件
 Route::group(['middleware' => ['login']], function () {
     // 添加学生信息
 	Route::get('/student/add','StudentController@add');
 });
-
-
 
 Route::group(['middleware' => ['Timeupdate']], function () {
 	Route::get('/admin/update','admin\GoodsController@update');
