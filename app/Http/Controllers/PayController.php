@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\BasicController;
+use App\Http\Model\Cart;
+use App\Http\Model\Order;
+use DB;
 use Pay;
-class PayController extends Controller
+class PayController extends BasicController
 {
     public $app_id;
     public $gate_way;
@@ -23,13 +27,26 @@ class PayController extends Controller
         $this->return_url = env('APP_URL').'/return_url';
     }
 
+    /**
+     * 订单支付
+     * @param $oid
+     */
+    
     public function do_pay(){
-        $oid = time().mt_rand(1000,1111);  
+        // $oid = time().rand(1000,9999);
+        $uid = session('id');
+        $order = Order::where(['uid'=>$uid,'state'=>1])->select(['pay_money'])->first();
+        if(empty($order)){
+            echo "订单不存在!";
+            die();
+        }
+        $order_info = $order->toArray();
+        $oid = time().rand(1000,9999);
         //订单编号
         $order = [
             'out_trade_no' => $oid,
-            'total_amount' => '1',
-            'subject' => 'test submit - 测试',
+            'total_amount' => $order_info['pay_money'],
+            'subject' => 'test submit123',
         ];
         
         return Pay::alipay()->web($order);
@@ -85,8 +102,6 @@ class PayController extends Controller
         return $stringToBeSigned;
     }
 
-    
-
     /**
      * 根据订单号支付
      * [ali_pay description]
@@ -94,13 +109,17 @@ class PayController extends Controller
      * @return [type]      [description]
      */
     public function ali_pay($oid){
-        $order = [];
-        $order_info = $order;
+        $order = $this->order_table->where(['oid'=>$oid,'state'=>1])->select(['pay_money'])->first();
+        if(empty($order)){
+            echo "订单不存在!";
+            die();
+        }
+        $order_info = $order->toArray();
         //业务参数
         $bizcont = [
             'subject'           => 'Lening-Order: ' .$oid,
             'out_trade_no'      => $oid,
-            'total_amount'      => 10,
+            'total_amount'      => $order_info['pay_money'],
             'product_code'      => 'FAST_INSTANT_TRADE_PAY',
         ];
         //公共参数

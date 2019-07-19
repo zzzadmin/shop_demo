@@ -6,8 +6,9 @@ use App\Http\Model\Cart;
 use App\Http\Model\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\BasicController;
 
-class IndexController extends Controller
+class IndexController extends BasicController
 {
 	// 前台首页
     public function index(Request $request)
@@ -29,13 +30,31 @@ class IndexController extends Controller
 
     // 加入购物车
     public function cart_add(Request $request){
-        $id = $request->get('id');
-        // dd($id);
+        // 接收goods_id
+        $req = $request->all();
+        // dd($req);
+        // 判断是否登录
         $uid = session('id');
+        if($uid==null){
+            echo ("<script>alert('请先登录');location='/admin/login'</script>");
+        }
         // dd($uid);
-        $data = Goods::where(['id'=>$id])->first()->toArray();
+        // 判断购物车有没有重复的
+        $cart_info = Cart::where(['uid'=>$uid])->select(['goods_id'])->get()->toArray();
+        // dd($cart_info);
+        $cart_info_arr = [];
+        if(!empty($cart_info)){
+            foreach ($cart_info as $k => $v) {
+                $cart_info_arr[] = $v['goods_id'];
+            }
+        }
+        // dd($cart_info_arr);
+        if(in_array($req['goods_id'],$cart_info_arr)){
+            echo("<script>alert('购物车已存在该商品');location='/home'</script>");
+        }
+        $data = Goods::where(['id'=>$req['goods_id']])->first()->toArray();
         // dd($data);
-        $res = Cart::where(['id'=>$id])->insert([
+        $res = Cart::where(['id'=>$req['goods_id']])->insert([
             'uid'=>$uid,
             'goods_name'=>$data['goods_name'],
             'goods_id'=>$data['id'],
@@ -55,12 +74,16 @@ class IndexController extends Controller
     public function cart_do(Request $request){
         $uid = session('id');
         // dd($uid);
-        if($uid==null){
-            echo ("<script>alert('请先登录');location='/admin/login'</script>");
-        }
+        
         $data = Cart::where(['uid'=>$uid])->get();
         // dd($data);
-        return view('index.cart_do',['data'=>$data]);
+        // 商品总价
+        $total = 0;
+        foreach ($data->toArray() as $key => $v) {
+            $total += $v['goods_price'];
+        }
+        // dd($total);
+        return view('index.cart_do',['data'=>$data,'total'=>$total]);
 
     }
 
@@ -87,11 +110,30 @@ class IndexController extends Controller
 
     // 订单视图
     public function order_list(Request $request){
-        $oid = Order::get('oid')->toArray();
-        // dd($oid);
-        $data = Order::where(['oid'=>$oid])->get()->toArray();
-        // dd($data);
-        return view('index.order',['data'=>$data]);                                                                             
+        $uid = session('id');
+        // dd($uid);
+        $order_info = Order::where(['uid'=>$uid])->orderBy('add_time','desc')->paginate(5);
+         // dd($order_info);
+        $order = $order_info->toArray()['data'];
+        // dd($order);
+        // 状态
+        $state_list = [1=>'待支付',2=>'已支付','3'=>'已过期',4=>'用户删除'];
+        // 商品总价
+        $data = Cart::where(['uid'=>$uid])->get();
+        $total = 0;
+        foreach ($data->toArray() as $key => $v) {
+            $total += $v['goods_price'];
+        }
+        // dd($total);
+        // 十分钟取消了订单 
+        foreach($order as $k=>$v){
+            $order[$k]['end_time'] = date('Y/m/d H:i:s',$v['add_time'] + 10 * 60);
+            $order[$k]['order_state'] = $state_list[$v['state']];
+            $order[$k]['pay_money'] =  $total;
+        }
+        // dd($order);
+        
+        return view('index.order',['order_info'=>$order_info,'order'=>$order,'total'=>$total]);                                                              
     }
 
 }
