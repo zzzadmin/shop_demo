@@ -8,13 +8,11 @@ use App\Http\Model\Admin;
 use DB;
 class IndexController extends Controller
 {
-
 	// 注册
     public function register()
     {
     	return view('admin.register');
     }
-
     // 执行注册
     public function register_do(Request $request){
     	$data = $request->all();

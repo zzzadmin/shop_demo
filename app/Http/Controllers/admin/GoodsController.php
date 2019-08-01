@@ -22,7 +22,7 @@ class GoodsController extends Controller
     	$data = $request->all();
     	$data['add_time'] =time();
         unset($data['_token']);
-        dd($data);
+        // dd($data);
         // 文件上传
         $files = $request->file('goods_pic');
     	// dd($files);

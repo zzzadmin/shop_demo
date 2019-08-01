@@ -92,3 +92,91 @@ Route::group(['middleware' => ['Timeupdate']], function () {
 Route::get('pay','PayController@do_pay');
 Route::get('return_url','PayController@return_url');//同步
 Route::post('notify_url','PayController@notify_url');//异步
+
+
+// 考试
+// 火车票添加
+Route::get('/train/add','exam\TindexController@add');
+Route::post('/train/add_do','exam\TindexController@add_do');
+// 火车票展示
+Route::get('/train/trian_list','exam\TindexController@list');
+
+// 考试登录
+// 登录
+Route::get('/exam/login','exam\ExamController@login');
+Route::post('/exam/login_do','exam\ExamController@login_do');
+// 添加试题
+Route::get('/exam/add','exam\ExamController@add');
+// 单选
+Route::get('/exam/radio','exam\ExamController@radio');
+Route::post('/exam/radio_do','exam\ExamController@radio_add');
+// 复选
+Route::post('/exam/checkbox_do','exam\ExamController@checkbox_add');
+// 判断
+Route::post('/exam/judge_do','exam\ExamController@judge_add');
+// 添加试卷
+Route::get('/exam/paper','exam\ExamController@paper');
+Route::post('/exam/paper_do','exam\ExamController@paper_add');
+// 试卷列表
+Route::get('/exam/list','exam\ExamController@list');
+
+// 调研
+// 登录
+Route::get('/survey/login','survey\SurveyController@login');
+Route::post('/survey/login_do','survey\SurveyController@login_do');
+// 添加调研项目
+Route::get('/survey/add','survey\SurveyController@add');
+Route::post('/survey/add_do','survey\SurveyController@add_do');
+Route::get('survey/add_subject','survey\SurveyController@add_subject');
+Route::get('survey/add_question','survey\SurveyController@add_question');
+
+// 球队竞猜
+Route::get('/compete/team_add','compete\CompeteController@team_add');
+Route::post('/compete/team_add_do','compete\CompeteController@team_add_do');
+// 竞猜列表
+Route::get('/compete/list','compete\CompeteController@team_list');
+// 参加竞猜
+Route::get('/compete/join','compete\CompeteController@join');
+// 竞猜后台添加
+Route::get('/compete/join_admin','compete\CompeteController@join_admin');
+// 竞猜列表
+Route::get('/compete/join_list','compete\CompeteController@join_list');
+// 竞猜结果
+Route::get('/compete/req','compete\CompeteController@req');
+// 后台控制
+Route::get('/compete/control','compete\CompeteController@control');
+Route::get('/compete/control_do','compete\CompeteController@control_do');
+
+//车库管理
+Route::get("cart/add_cart",'cart\CartController@add_cart');
+Route::post("cart/add_cart_do",'cart\CartController@add_cart_do');
+Route::get("cart/del_cart",'cart\CartController@del_cart');
+Route::post("cart/del_cart_do",'cart\CartController@del_cart_do');
+Route::get("cart/index",'cart\CartController@index');
+Route::get("cart/del_price",'cart\CartController@del_price');
+
+// 经纬度计算
+Route::get("map/address",'map\MapController@address');
+Route::post("map/address_do",'map\MapController@address_do');
+
+// laravel注册登录
+Route::get("login/register",'login\LoginController@register');
+Route::post("login/register_do",'login\LoginController@register_do');
+Route::get("login/login",'login\LoginController@login');
+Route::post("login/login_do",'login\LoginController@login_do');
+
+// 考试
+// 登录
+Route::get("news/login","news\NewsController@login");
+Route::post("news/login_do","news\NewsController@login_do");
+// 添加
+Route::get("/news/add","news\NewsController@add");
+Route::post("/news/add_do","news\NewsController@add_do");
+// 列表
+Route::get("/news/list","news\NewsController@list");
+// 详情
+Route::get("/news/delete","news\NewsController@delete");
+Route::get("/news/detail","news\NewsController@detail");
+
+// 接口测试
+Route::post("ceshi","news\NewsController@ceshi");

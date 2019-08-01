@@ -16,6 +16,10 @@ class Login
     {
         // 前置
         // echo 111;
+        // 非法登录
+        // if(!session('username')){
+        //     return redirect('/');
+        // }
         $result = $request->session()->has('username');
         // dd($result);
         if($result){
