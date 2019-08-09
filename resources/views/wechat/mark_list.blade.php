@@ -3,7 +3,7 @@
 	<a href="{{url('/wechat/mark')}}">添加标签</a> |
 	<a href="{{url('/wechat/get_user_info_list')}}">公众号粉丝列表</a>
 	<table border="1">
-		<tr>
+		<tr style=color:red>
 			<th>id</th>
 			<th>标签名称</th>
 			<th>标签下粉丝数</th>
@@ -11,9 +11,9 @@
 		</tr>
 		@foreach($info as $v)
 		<tr>
-			<td>{{$v['id']}}</td>
-            <td>{{$v['name']}}</td>
-            <td>{{$v['count']}}</td>
+			<th>{{$v['id']}}</th>
+            <th>{{$v['name']}}</th>
+            <th>{{$v['count']}}</th>
 			<td>
 				<a href="{{url('/wechat/mark_del')}}?id={{$v['id']}}">删除</a> |
 				<a href="{{url('/wechat/mark_fans_list')}}?id={{$v['id']}}">标签粉丝列表</a> |

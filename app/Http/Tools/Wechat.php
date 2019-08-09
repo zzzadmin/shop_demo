@@ -154,7 +154,7 @@ class Wechat{
         //获取access_token
         $redis = new \Redis();
         $redis->connect('127.0.0.1','6379');
-        $access_token_key = 'wechat_access_token_on';
+        $access_token_key = 'wechat_access_token';
         if($redis->exists($access_token_key)){
             //去缓存拿
             $access_token = $redis->get($access_token_key);
@@ -180,7 +180,6 @@ class Wechat{
         $user_info = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/get?access_token={$access_token}&next_openid=");
         $user_info = json_decode($user_info,1);
         // dd($user_info);
-
         $openid = $user_info['data']['openid'];
         return $openid;
     }

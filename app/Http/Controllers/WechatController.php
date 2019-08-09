@@ -467,17 +467,18 @@ class WechatController extends Controller
 
 	// 获取关注用户列表
     public function get_user_list(){
-    	$access_token = $this->get_access_token();
-    	// dd($sccess_token);
+    	$access_token = $this->wechat->get_access_token();
+    	// dd($access_token);
     	// 获取关注用户列表
     	$Wechat_openid_user = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/get?access_token={$access_token}&next_openid=");
+    	// 用户信息
     	$user_info = json_decode($Wechat_openid_user,1);
     	$openid = $user_info['data']['openid'];
     	foreach ($openid as $v){
     		$subscribe = Wechat_openid::where(['openid'=>$v])->value('subscribe');
     		if(empty($subscribe)){
     			// 获取用户详细信息
-    			$access_token = $this->get_access_token();
+    			$access_token = $this->wechat->get_access_token();
 	    		$openid = $v;
 	    		$Wechat_openid_user = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN");
 		    	$user = json_decode($Wechat_openid_user,1);
@@ -488,7 +489,7 @@ class WechatController extends Controller
 	    		]);
     		}else{
     			// 获取用户详细信息
-    			$access_token = $this->get_access_token();
+    			$access_token = $this->wechat->get_access_token();
 	    		$openid = $v;
 	    		$Wechat_openid_user = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN");
 		    	$user = json_decode($Wechat_openid_user,1);
@@ -502,17 +503,15 @@ class WechatController extends Controller
 
     	}
     	echo "<script>history.go(-1);</script>";
-    	// dd($openid);
-    	// return $openid;
+    	
 
     }
 
     // 获取关注用户信息
     public function get_user_info(){
-    	$access_token = $this->get_access_token();
+    	$access_token = $this->wechat->get_access_token();
     	$openid = $this->get_user_list();
     	// dd($openid);
-    	// $openid = 'oa5OJw7v_BpVKcVh2Q6bBO4VTppc';
     	// 用户信息
     	$Wechat_openid_user = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN");
     	$Wechat_openid_info = json_decode($Wechat_openid_user,1);
@@ -532,7 +531,7 @@ class WechatController extends Controller
     	// 接收传过来的值
     	$openid = $request->get('openid');
     	// dd($openid);
-    	$access_token = $this->get_access_token();
+    	$access_token = $this->wechat->get_access_token();
     	// 用户信息
     	$Wechat_openid_user = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN");
     	$Wechat_openid_info = json_decode($Wechat_openid_user,1);
@@ -547,27 +546,5 @@ class WechatController extends Controller
 
     }
 
-    // 获取access_token 
-    public function get_access_token(){
-    	// 获取access_token
-    	$redis = new \redis();
-		$redis->connect('127.0.0.1','6379');
-    	$access_token_key = 'Wechat_openid_access_token';
-    	if($redis->exists($access_token_key)){
-    		// 去缓冲拿
-    		$access_token = $redis->get($access_token_key);
-    	}else{
-    		// 去微信接口拿
-    		$sccess_token = '';
-	    	$access_re = file_get_contents("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WECHAT_APPID')."&secret=".env('WECHAT_APPSECRET'));
-	    	$data = json_decode($access_re,1);
-	    	// dd($data);
-	    	$access_token = $data['access_token'];
-	    	$expires_time = $data['expires_in'];
-	    	// 加入缓冲
-	    	$redis->set($access_token_key,$access_token,$expires_time);
-    	}
-    	
-    	return $access_token;
-    }
+    
 }
