@@ -179,4 +179,51 @@ Route::get("/news/delete","news\NewsController@delete");
 Route::get("/news/detail","news\NewsController@detail");
 
 // 接口测试
-Route::post("ceshi","news\NewsController@ceshi");
+Route::get("ceshi","news\NewsController@ceshi");
+// 获取用户信息
+Route::get("/wechat/get_user_info","WechatController@get_user_info");
+// 获取用户信息列表
+Route::get("/wechat/get_user_info_list","WechatController@get_user_info_list");
+Route::get("/wechat/get_user_basic_list","WechatController@get_user_basic_list");
+// 获取用户列表
+Route::get("/wechat/get_user_list","WechatController@get_user_list");
+// 登录
+Route::get("/wechat/code","WechatController@code");
+Route::get("/wechat/login","WechatController@login");
+// 模板列表
+Route::get('/wechat/template_list','WechatController@template_list');
+// 删除模板
+Route::get('/wechat/del_template','WechatController@del_template');
+// 推送模板消息
+Route::get('/wechat/push_template','WechatController@push_template');
+//上传素材
+Route::get('/wechat/upload_source','WechatController@upload_source');
+Route::post('wechat/do_upload','WechatController@do_upload');
+// 获取素材列表
+Route::get('/wechat/source_list','WechatController@source_list');
+// 获取素材
+Route::get('/wechat/get_source','WechatController@get_source');//图片
+Route::get('/wechat/get_video_source','WechatController@get_video_source');//视频
+Route::get('/wechat/get_voice_source','WechatController@get_voice_source');//音频
+Route::get('/wechat/del_source','WechatController@del_source');//删除永久素材
+Route::get('/wechat/mark','WechatController@mark');//创建标签视图
+Route::get('/wechat/mark_add','WechatController@mark_add');//创建标签
+Route::get('/wechat/mark_list','WechatController@mark_list');//标签列表
+Route::get('/wechat/mark_list_do','WechatController@mark_list_do');//获取用户标签
+Route::get('/wechat/mark_update','WechatController@mark_update');//编辑标签视图
+Route::get('/wechat/mark_upd','WechatController@mark_upd');//编辑标签
+Route::get('/wechat/mark_del','WechatController@mark_del');//删除标签
+Route::post('/wechat/mark_peo','WechatController@mark_peo');//批量为用户打标签
+Route::get('/wechat/mark_peo_list','WechatController@mark_peo_list');//获取用户身上的标签列表
+Route::get('/wechat/mark_fans_list','WechatController@mark_fans_list');//获取标签下粉丝列表
+Route::get('/wechat/mark_peo_del','WechatController@mark_peo_del');//获取用户身上的标签列表
+Route::get('/wechat/push_mark_message','WechatController@push_mark_message');//根据标签为用户推送消息
+Route::post('/wechat/push_mark_message_do','WechatController@push_mark_message_do');//根据标签为用户推送消息
+Route::get('/wechat/clean_up','WechatController@clean_up');//清除接口调用次数
+
+Route::get("/admin/wechat_login","admin\IndexController@wechat_login");
+Route::get("/admin/code","admin\IndexController@code");
+
+
+
+

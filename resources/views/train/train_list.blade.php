@@ -21,13 +21,13 @@
 		<td>{{$v['t_set']}}</td>
 		<td>{{$v['t_arrive']}}</td>
 		<td>{{$v['price']}}</td>
-			@if($v['t_number']==0)
-            <td>无</td>
-            @elseif($v['t_number']>100)
-            <td>有</td>
-            @else
-            <td>{{$v['t_number']}}</td>
-            @endif
+		@if($v['t_number']==0)
+        <td>无</td>
+        @elseif($v['t_number']>100)
+        <td>有</td>
+        @else
+        <td>{{$v['t_number']}}</td>
+        @endif
 		<td>
 			<button class="buy">预定</button>
  		</td>

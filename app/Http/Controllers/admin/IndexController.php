@@ -8,6 +8,34 @@ use App\Http\Model\Admin;
 use DB;
 class IndexController extends Controller
 {
+	// 微信登录
+	public function wechat_login(){
+		$redirect_uri = 'http://www.shopdemo.com/admin/code';
+        $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WECHAT_APPID').'&redirect_uri='.urlencode($redirect_uri).'&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect ';
+
+		header('Location:'.$url);
+	}
+
+	// 通过code获得access_token
+	public function code(Request $request){
+		$data = $request->all();
+		$code = $data['code'];
+		// dd($code);
+		// 获取access_token
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".env("WECHAT_APPID")."&secret=".env("WECHAT_APPSECRET")."&code=".$code."&grant_type=authorization_code";
+
+		$info = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".env('WECHAT_APPID')."&secret=".env('WECHAT_APPSECRET')."&code=".$code."&grant_type=authorization_code");
+    	$infos = json_decode($info,1);
+    	$access_token = $infos['access_token'];
+        $openid = $infos['openid'];
+        // dd($openid);
+        // 获取用户基本信息
+        //去user_openid 表查 是否有数据 openid = $openid
+        //有数据 在网站有用户 user表有数据[ 登陆 ]
+        //没有数据 注册信息  insert user  user_openid   生成新用户
+    	// dd($access_token);
+
+	}
 	// 注册
     public function register()
     {

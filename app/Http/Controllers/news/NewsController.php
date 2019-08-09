@@ -69,7 +69,7 @@ class NewsController extends Controller
     		$data['news_img'] = asset('storage').'/'.$path;
     		// dd($data['news_img']);
     	}
-    	// dd($data);
+    	dd($data);
     	$res = News::insert($data);
     	// dd($res);
     	if($res){

@@ -16,10 +16,6 @@
 				</td>
 			</tr>
 			<tr>
-				<td>验证码</td>
-				<td></td>
-			</tr>
-			<tr>
 				<td>
 					<button>注册</button>
 				</td>
