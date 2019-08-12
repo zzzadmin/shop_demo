@@ -20,6 +20,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //去除csrf验证的路由
+        'wechat/event',
         'notify_url','return_url',
         'ceshi'
     ];
