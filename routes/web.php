@@ -220,7 +220,7 @@ Route::get('/wechat/mark_peo_del','WechatController@mark_peo_del');//获取用�
 Route::get('/wechat/push_mark_message','WechatController@push_mark_message');//根据标签为用户推送消息
 Route::post('/wechat/push_mark_message_do','WechatController@push_mark_message_do');//根据标签为用户推送消息
 Route::get('/wechat/clean_up','WechatController@clean_up');//清除接口调用次数
-
+Route::get('/wechat/event','WechatController@event');//微信消息推送
 Route::get("/admin/wechat_login","admin\IndexController@wechat_login");
 Route::get("/admin/code","admin\IndexController@code");
 

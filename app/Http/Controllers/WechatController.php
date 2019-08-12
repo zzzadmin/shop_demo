@@ -18,6 +18,11 @@ class WechatController extends Controller
 		$this->request = $request;
 		$this->wechat = $wechat;
 	}
+	// 微信消息推送
+	public function event(){
+		echo $_GET['echostr'];
+		die();
+	}
 	// 清除接口调用次数
 	public function clean_up(){
         $url = 'https://api.weixin.qq.com/cgi-bin/clear_quota?access_token='.$this->wechat->get_access_token();
@@ -503,8 +508,7 @@ class WechatController extends Controller
 
     	}
     	echo "<script>history.go(-1);</script>";
-    	
-
+    
     }
 
     // 获取关注用户信息

@@ -45,7 +45,7 @@ class Wechat{
      */
     public function upload_source($up_type,$type,$title='',$desc=''){
         $file = $this->request->file($type);
-        $file_ext = $file->getClientOriginalExtension();          //获取文件扩展名
+        $file_ext = $file->getClientOriginalExtension();//获取文件扩展名
         //重命名
         $new_file_name = time().rand(1000,9999). '.'.$file_ext;
         //文件保存路径
@@ -53,9 +53,11 @@ class Wechat{
         $save_file_path = $file->storeAs('wechat/video',$new_file_name);//返回保存成功之后的文件路径
         $path = './storage/'.$save_file_path;
         if($up_type  == 1){
-            $url='https://api.weixin.qq.com/cgi-bin/media/upload?access_token=' . $this->get_access_token().'&type='.$type;
+            // 临时素材
+            $url='https://api.weixin.qq.com/cgi-bin/media/upload?access_token='.$this->get_access_token().'&type='.$type;
 
         }elseif($up_type == 2){
+            // 永久素材
             $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$this->get_access_token().'&type='.$type;
         }
         $multipart = [
