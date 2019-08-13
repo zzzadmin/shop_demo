@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Model\Wechat_openid;//模型
 use App\Http\Model\Admin;//模型
+use App\Http\Model\User_agent;//模型
 use Illuminate\Http\Request;
 use App\Http\Model\User_openid;
 use DB;
@@ -19,22 +20,82 @@ class WechatController extends Controller
 		$this->wechat = $wechat;
 	}
 	// 微信消息推送
-	public function event(){
-		// echo $_GET['echostr'];
-        // die();
+	public function event()
+    {
         //$this->checkSignature();
         $data = file_get_contents("php://input");
         //解析XML
-        $xml = simplexml_load_string($data,'SimpleXMLElement', LIBXML_NOCDATA);        //将 xml字符串 转换成对象
+        $xml = simplexml_load_string($data,'SimpleXMLElement', LIBXML_NOCDATA);//将 xml字符串 转换成对象
         $xml = (array)$xml; //转化成数组
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents(storage_path('logs/wx_event.log'),$log_str,FILE_APPEND);
-        \Log::Info(json_encode($xml));
-        $message = '你好!';
-        $xml_str = '<xml><ToUserName><![CDATA['.$xml['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
-        echo $xml_str;
-        //echo $_GET['echostr'];
+        if($xml['MsgType'] == 'event'){
+            if($xml['Event'] == 'subscribe'){ //关注
+                if(isset($xml['EventKey'])){
+                    //拉新操作
+                    $agent_code = explode('_',$xml['EventKey'])[1];
+                    dd($agent_code);
+                    $agent_info = User_agent::where(['uid'=>$agent_code,'openid'=>$xml['FromUserName']])->first();
+                    if(empty($agent_info)){
+                        User_agent::insert([
+                            'uid'=>$agent_code,
+                            'openid'=>$xml['FromUserName'],
+                            'add_time'=>time()
+                        ]);
+                    }
+                }
+                $message = '你好!';
+                $xml_str = '<xml><ToUserName><![CDATA['.$xml['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+                echo $xml_str;
+            }
+        }elseif($xml['MsgType'] == 'text'){
+            $message = '你好!';
+            $xml_str = '<xml><ToUserName><![CDATA['.$xml['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+            echo $xml_str;
+        }
+        //echo $_GET['echostr'];  //第一次访问
+    }
+
+	// 生成临时的带参数的二维码
+	public function create_qrcode(){
+		$url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=".$this->wechat->get_access_token();
+		$data=[
+            'expire_seconds' => 24*3600*30,
+            'action_name' => 'QR_STR_SCENE',
+            'action_info' => [
+            	'scene' => [
+                	'scene_id'=>'456ss'
+                ]
+            ]
+        ];
+        $data=json_encode($data);
+        $re = $this->wechat->post($url,$data);
+        // dd($re);
 	}
+
+	//获取二维码
+    public function show_qrcode()
+    {
+        $ticket=UrlEncode('gQE08DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWkkyWkF0SGplOTMxcXJ5Vk50Y3MAAgSbFVJdAwQAjScA');
+        // dd($ticket);
+        $url='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket;
+        $re = file_get_contents($url);
+        // dd($re);
+        // header("location:$url");
+        $client = new Client();
+        $response = $client->get($url);
+        // 获取文件名
+        $h = $response->getHeaders();
+        // print_r($h);
+        $ext = explode('/',$h['Content-Type'][0])[1];
+        $file_name = time().rand(1000,9999).'.'.$ext;
+        // 保存图片
+        $path = 'qrcode/'.$file_name;
+        $re = Storage::disk('local')->put($path,$response->getBody());
+        $qrcode_url = env('APP_URL').'/storage/'.$path;
+        // dd($qrcode_url);
+        // 存入数据库
+    }
 	// 清除接口调用次数
 	public function clean_up(){
         $url = 'https://api.weixin.qq.com/cgi-bin/clear_quota?access_token='.$this->wechat->get_access_token();
@@ -563,4 +624,10 @@ class WechatController extends Controller
     }
 
     
+
+
+
+
+
+
 }

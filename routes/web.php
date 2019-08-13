@@ -221,6 +221,15 @@ Route::get('/wechat/push_mark_message','WechatController@push_mark_message');//�
 Route::post('/wechat/push_mark_message_do','WechatController@push_mark_message_do');//根据标签为用户推送消息
 Route::get('/wechat/clean_up','WechatController@clean_up');//清除接口调用次数
 Route::any('/wechat/event','WechatController@event');//微信消息推送
+Route::get('/wechat/create_qrcode','WechatController@create_qrcode');//创建二维码
+Route::get('/wechat/show_qrcode','WechatController@show_qrcode');//获取二维码
+/**
+ * 推广
+ */
+Route::get('/agent/user_list','AgentController@user_list');//推广用户列表
+Route::get('/agent/create_qrcode','AgentController@create_qrcode');//推广创建二维码
+Route::get('/agent/agent_list','AgentController@agent_list');//推广创建二维码
+
 Route::get("/admin/wechat_login","admin\IndexController@wechat_login");
 Route::get("/admin/code","admin\IndexController@code");
 
