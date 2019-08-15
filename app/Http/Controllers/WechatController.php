@@ -29,19 +29,22 @@ class WechatController extends Controller
         $xml = (array)$xml; //转化成数组
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents(storage_path('logs/wx_event.log'),$log_str,FILE_APPEND);
+
         if($xml['MsgType'] == 'event'){
+        	//微信事件推送
             if($xml['Event'] == 'subscribe'){ //关注
                 if(isset($xml['EventKey'])){
                     //拉新操作
-                    $agent_code = explode('_',$xml['EventKey'])[1];
+                    $agent_code = explode('_',$xml['EventKey'])[0];
                     dd($agent_code);
                     $agent_info = User_agent::where(['uid'=>$agent_code,'openid'=>$xml['FromUserName']])->first();
                     if(empty($agent_info)){
-                        User_agent::insert([
+                        $re = User_agent::insert([
                             'uid'=>$agent_code,
                             'openid'=>$xml['FromUserName'],
                             'add_time'=>time()
                         ]);
+                        
                     }
                 }
                 $message = '你好!';
@@ -55,6 +58,8 @@ class WechatController extends Controller
         }
         //echo $_GET['echostr'];  //第一次访问
     }
+
+    
 
 	// 生成临时的带参数的二维码
 	public function create_qrcode(){

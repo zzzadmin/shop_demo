@@ -1,4 +1,6 @@
-<table border="1">
+<center>
+	<table border="1">
+	<h3>微信推广</h3>
        <tr>
            <td>用户uid</td>
            <td>用户专属推广码</td>
@@ -17,3 +19,4 @@
            </tr>
        @endforeach
    </table>
+</center>

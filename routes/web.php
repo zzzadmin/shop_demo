@@ -230,6 +230,12 @@ Route::get('/agent/user_list','AgentController@user_list');//推广用户列表
 Route::get('/agent/create_qrcode','AgentController@create_qrcode');//推广创建二维码
 Route::get('/agent/agent_list','AgentController@agent_list');//推广创建二维码
 
+Route::get('/menu/create_menu','MenuController@create_menu');//创建菜单
+Route::get('/menu/menu_list','MenuController@menu_list');
+Route::get('/menu/del_menu','MenuController@del_menu');  //完全删除菜单
+Route::post('/menu/do_add_menu','MenuController@do_add_menu');  //增加菜单
+Route::get('/menu/display_menu','MenuController@display_menu');  //菜单查询接口
+Route::get('/menu/reload_menu','MenuController@reload_menu');  //刷新菜单接口
 Route::get("/admin/wechat_login","admin\IndexController@wechat_login");
 Route::get("/admin/code","admin\IndexController@code");
 

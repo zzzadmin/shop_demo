@@ -70,5 +70,6 @@ class AgentController extends Controller
     	//用户uid
     	$uid = $request->all()['uid']; 
         //user_agent 表数据 根据uid查询
+        $data = Admin::select('openid');
     }
 }
