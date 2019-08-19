@@ -12,7 +12,7 @@
 				<td>openid</td>
 				<td>关注时间</td>
 				<td>是否关注</td>
-				<td>查看详情</td>
+				<td>操作</td>
 			</tr>
 			@foreach($data as $k=>$v)
 			<tr>
@@ -29,7 +29,9 @@
 				@endif
 				<td>
 					<a href="{{url('/wechat/get_user_basic_list')}}?openid={{$v->openid}}">基本信息</a>|
-					<a href="{{url('/wechat/mark_list_do')}}?openid={{$v->openid}}">获取标签</a>
+					<a href="{{url('/wechat/mark_list_do')}}?openid={{$v->openid}}">获取标签</a>|
+					<a href="{{url('/message/send_message')}}?openid={{$v->openid}}">发送留言</a>|
+					<a href="{{url('/love/send')}}?openid={{$v->openid}}">我要表白</a>
 				</td>
 			</tr>
 			@endforeach

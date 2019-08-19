@@ -92,19 +92,19 @@ class Wechat{
         $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$this->get_access_token();
         $data = [
             'touser'=>$openid,
-            'template_id'=>'G8DkW7YWmatbcXDB7FHqmWU2KS-hBP_zvjLTgwkHqFM',
+            'template_id'=>'2cKbeGOnrL7CaaBhfZLr1k3GW4HdXEMhapmrUYGcHHE',
             'url'=>'http://www.baidu.com',
             'data' => [
                 'first' => [
-                    'value' => '商品名称',
+                    'value' => '',
                     'color' => ''
                 ],
                 'keyword1' => [
-                    'value' => '低价',
+                    'value' => '自定义1',
                     'color' => ''
                 ],
                 'keyword2' => [
-                    'value' => '是低价',
+                    'value' => '',
                     'color' => ''
                 ],
                 'remark' => [

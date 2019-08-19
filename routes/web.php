@@ -236,8 +236,24 @@ Route::get('/menu/del_menu','MenuController@del_menu');  //完全删除菜单
 Route::post('/menu/do_add_menu','MenuController@do_add_menu');  //增加菜单
 Route::get('/menu/display_menu','MenuController@display_menu');  //菜单查询接口
 Route::get('/menu/reload_menu','MenuController@reload_menu');  //刷新菜单接口
-Route::get("/admin/wechat_login","admin\IndexController@wechat_login");
-Route::get("/admin/code","admin\IndexController@code");
+
+//////////////////////////////////////////////////////////////
+// 留言授权登录
+Route::get('/message/login','MessageController@login');  //微信授权登录
+Route::get('/message/code','MessageController@code');  //微信授权登录
+Route::get('/message/send_message','MessageController@send_message');  //微信留言
+Route::post('/message/send_message_do','MessageController@send_message_do');  //微信留言
+
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+// 表白
+Route::get('/love/add','love\LoveController@add');//表白添加视图
+Route::get('/love/code','love\LoveController@code');//表白添加视图
+Route::get('/love/send','love\LoveController@send');//表白添加视图
+Route::post('/love/send_do','love\LoveController@send_do');//表白添加视图
+
+/////////////////////////////////////////////////////////////
 
 
 

@@ -20,16 +20,18 @@ class Login
         // if(!session('username')){
         //     return redirect('/');
         // }
-        $result = $request->session()->has('username');
+        $result = $request->session()->has('uid');
         // dd($result);
         if($result){
             echo "登陆成功！";
+        }else{
+          // 登录失败
         }
 
         $response = $next($request);
         // 后置
-        echo 2222;
-        return $response;
+        // echo 2222;
+        // return $response;
         // return $next($request);
     }
 }
